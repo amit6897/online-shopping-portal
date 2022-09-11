@@ -1,6 +1,7 @@
 package com.learn.product.service;
 
 import com.learn.product.dto.Product;
+import com.learn.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,9 +10,41 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+    private ProductRepository repository;
 
-    List<Product> products = new ArrayList<>();
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
 
+    public String addProduct(Product product) {
+        repository.save(product);
+        return "success";
+    }
+
+    public List<Product> listAllProducts() {
+        return repository.findAll();
+    }
+
+    public List<Product> listAllProductsByCategory(String category) {
+        return repository.findByCategory(category);
+    }
+
+    public Product productsById(Integer id) {
+        return repository.findById(id).get();
+    }
+
+    public String updateProduct(Product product) {
+        repository.save(product);
+        return "product updated";
+    }
+
+    public String deleteProductById(Integer id) {
+        repository.deleteById(id);
+        return "product deleted";
+    }
+
+    //List<Product> products = new ArrayList<>();   --> we used this list when we are temporary storing data in the inMemory
+    /*
     public String addProduct(Product product) {
         products.add(product);
         return "success";
@@ -54,4 +87,5 @@ public class ProductService {
         }
         return "product deletion failed";
     }
+    */
 }
